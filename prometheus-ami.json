@@ -1,0 +1,54 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "region": "us-east-2"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "prometheus-t2micro",
+      "ami_virtualization_type": "hvm",
+      "ami_regions": "{{user `region`}}",
+      "force_deregister": true,
+      "force_delete_snapshot": true,
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `region`}}",
+      "instance_type": "t2.micro",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "product-code": "aw0evgkw8e5c1q413zgy5pjce"
+        },
+        "owners": ["aws-marketplace"],
+        "most_recent": true
+      },
+      "shutdown_behavior": "terminate",
+      "ssh_username": "centos"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "./rpms/prometheus/gradlew -p ./rpms/prometheus/ clean buildPrometheus"
+    },
+    {
+      "type": "file",
+      "source": "./rpms/prometheus/build/distributions/prometheus-2.14.0-1.x86_64.rpm",
+      "destination": "/tmp/prometheus-2.14.0-1.x86_64.rpm"
+    },
+    {
+      "type": "shell",
+      "script": "./ansible-install.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "configure.yml"
+    },
+    {
+      "type": "shell",
+      "script": "./uninstall-ansible.sh"
+    }
+  ]
+}

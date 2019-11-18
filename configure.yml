@@ -1,0 +1,18 @@
+- name: base provisioning for prometheus ami
+  hosts: all
+  tasks:
+    - name: system patch
+      become: yes
+      yum:
+        name: '*'
+        state: latest
+    - name: install prometheus
+      become: yes
+      yum:
+        name: '/tmp/prometheus-2.14.0-1.x86_64.rpm'
+        state: present
+    - name: remove prometheus rpm
+      become: yes
+      file:
+        path: '/tmp/prometheus-2.14.0-1.x86_64.rpm'
+        state: absent

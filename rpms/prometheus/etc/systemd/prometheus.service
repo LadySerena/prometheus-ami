@@ -1,0 +1,11 @@
+[Unit]
+Description=Prometheus Server (Open source monitoring)
+Documentation=https://prometheus.io/
+[Service]
+Type=simple
+ExecStart=/usr/sbin/prometheus --config.file=/etc/prometheus/prometheus-prod.yml --log.format=json --storage.tsdb.path=/prometheus_data --web.listen-address=0.0.0.0:9090 --web.console.templates=/var/prometheus/consoles --web.console.libraries=/var/prometheus/console_libraries --storage.tsdb.retention.time=6h
+Restart=on-failure
+User=prometheus
+Group=prometheus
+[Install]
+WantedBy=multi-user.target
