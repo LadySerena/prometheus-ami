@@ -1,3 +1,3 @@
 #!/bin/bash
 
-yum remove ansible -y
+sudo yum remove ansible -y
