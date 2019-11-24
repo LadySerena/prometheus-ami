@@ -2,7 +2,8 @@
   "variables": {
     "aws_access_key": "",
     "aws_secret_key": "",
-    "region": "us-east-2"
+    "region": "us-east-2",
+    "prometheus_role_arn": ""
   },
   "builders": [
     {

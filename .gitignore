@@ -1,3 +1,6 @@
 *.pem
 .gradle/
 .vagrant/
+secrets/
+.terraform/
+*.tfstate*
