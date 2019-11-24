@@ -132,6 +132,11 @@ resource "aws_subnet" "terraform_subnet_0" {
   }
 }
 
+resource "aws_eip" "lb" {
+  instance = aws_instance.prometheus.id
+  vpc      = true
+}
+
 
 resource "aws_instance" "prometheus" {
   depends_on = [aws_internet_gateway.terraform_gw]
