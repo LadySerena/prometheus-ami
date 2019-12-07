@@ -2,8 +2,7 @@
   "variables": {
     "aws_access_key": "",
     "aws_secret_key": "",
-    "region": "us-east-2",
-    "prometheus_role_arn": ""
+    "region": "us-east-2"
   },
   "builders": [
     {
@@ -30,15 +29,6 @@
     }
   ],
   "provisioners": [
-    {
-      "type": "shell-local",
-      "command": "./rpms/prometheus/gradlew -p ./rpms/prometheus/ clean buildPrometheus"
-    },
-    {
-      "type": "file",
-      "source": "./rpms/prometheus/build/distributions/prometheus-2.14.0-1.x86_64.rpm",
-      "destination": "/tmp/prometheus-2.14.0-1.x86_64.rpm"
-    },
     {
       "type": "shell",
       "script": "./ansible-install.sh"

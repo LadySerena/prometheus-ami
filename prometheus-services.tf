@@ -2,6 +2,11 @@ provider "aws" {
   profile = "default"
   region     = "us-east-2"
 }
+
+data "aws_s3_bucket" "rpmBucket" {
+  bucket = "serena-minecraft-rpm-bucket"
+}
+
 data "aws_iam_policy_document" "minecraft_read_only" {
   statement {
     sid = "1"
@@ -56,7 +61,18 @@ data "aws_iam_policy_document" "minecraft_read_only" {
       "sts:AssumeRole"
     ]
     resources = [
-      "${aws_iam_role.prometheus_role.arn}"
+      aws_iam_role.prometheus_role.arn
+    ]
+  }
+
+  statement {
+    sid = "7"
+    actions = [
+      "s3:GetObject"
+    ]
+    effect = "Allow"
+    resources = [
+      data.aws_s3_bucket.rpmBucket.arn
     ]
   }
 
